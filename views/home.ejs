@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QuickBite Recipes</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <style>
+        .recipe-title {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -13,16 +20,17 @@
             <div class="col-md-8 offset-md-2">
                 <div class="input-group">
                     <input class="form-control" placeholder="Search for recipes..." id="searchbar" onkeyup="search_recipe()" type="text" name="search">
+                    <button class="btn btn-primary" onclick="window.location.href='/recipe/new'">Add New Recipe</button>
                 </div>
             </div>
         </div>
         <div class="row">
             <% for (recipe of allrecipe) { %>
                 <div class="col-md-4 mb-4">
-                    <div class="card h-100" id="list">
-                        <img src="<%= recipe.photo %>" class="card-img-top" alt="Recipe Image">
+                    <div class="card h-100">
+                        <img src="<%= recipe.photo[0] %>" class="card-img-top" alt="Recipe Image">
                         <div class="card-body">
-                            <h5 class="card-title recipe"><%= recipe.title %></h5>
+                            <h5 class="card-title recipe-title"><%= recipe.title %></h5>
                             <a href="/recipe/<%= recipe._id %>" class="btn btn-primary">More</a>
                         </div>
                     </div>
@@ -32,23 +40,25 @@
     </div>
 
     <script>
-        // JavaScript code
-
         function search_recipe() {
             let input = document.getElementById('searchbar').value
             input = input.toLowerCase();
-            let x = document.getElementsByClassName('recipe');
-            
+            let x = document.getElementsByClassName('recipe-title');
+            let cards = document.getElementsByClassName('card');
+
             for (i = 0; i < x.length; i++) {
                 if (!x[i].innerHTML.toLowerCase().includes(input)) {
-                x[i].style.display = "none";
+                    cards[i].style.display = "none";
                 }
                 else {
-                x[i].style.display = "list-item";
+                    cards[i].style.display = "block";
+                }
+
+                if (!input) {
+                    cards[i].style.display = "block";
                 }
             }
         }
-    
     </script>
 </body>
 </html>

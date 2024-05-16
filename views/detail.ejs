@@ -46,18 +46,58 @@
         b {
             color: #333;
         }
+        .print-button {
+            display: block;
+            width: 150px;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+        }
+        @media print {
+            .print-button {
+                display: none !important;
+            }
+            .hide {
+                display: none !important;
+            }
+        }
+        .print-button:hover {
+            background-color: #45a049;
+        }
+        .photos {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        .ddd {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 8rem;
+            width: 13rem;
+        }
     </style>
 </head>
 <body>
     <div id="container">
         <h1><%= recipe.title %></h1>
-        <img src="<%= recipe.photo %>" alt="<%= recipe.title %>">
+        <div class="photos">
+            <% for (var i = 0; i < recipe.photo.length; i++) { %>
+                <img src="<%= recipe.photo[i] %>" height="250px">
+            <% } %>
+        </div>
+
         <p><b>Ingredients</b></p>
-        <ul>
+        <ol>
             <% for (var i = 0; i < recipe.ingredients.length; i++) { %>
                 <li><%= recipe.ingredients[i] %></li>
             <% } %>
-        </ul>
+        </ol>
         <p><b>Instructions</b></p>
         <ol>
             <% for (var i = 0; i < recipe.instructions.length; i++) { %>
@@ -65,9 +105,23 @@
             <% } %>
         </ol>
 
-        <form action="/recipe/<%= recipe._id %>?_method=DELETE" method="post">
-            <button class="btn btn-primary">Delete</button>
-        </form>
+        <div class="ddd">
+            <form action="/recipe/<%= recipe._id %>?_method=DELETE" method="post">
+                <button class="btn btn-primary hide">Delete</button>
+            </form>
+    
+            <a href="/recipe/<%=recipe._id%>/edit" class="btn btn-warning hide">Edit</a>
+        </div>
+
+        
+
+        <button class="print-button" onclick="printRecipe()">Print Recipe</button>
     </div>
+
+    <script>
+        function printRecipe() {
+            window.print();
+        }
+    </script>
 </body>
 </html>
