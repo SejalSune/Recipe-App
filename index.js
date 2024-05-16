@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express=require("express");
 const app=express();
 const mongoose = require('mongoose');
@@ -11,7 +12,7 @@ app.set("view engine", "ejs");
 app.set("views",path.join(__dirname,"/views"));
 app.use(express.static(path.join(__dirname,"public")));
 app.use(express.urlencoded({extended:true}));
-app.use(methodOverride('_method'))
+app.use(methodOverride('_method'));
 
 // home route
 app.get("/recipe",async (req,res,next) => {
@@ -100,5 +101,5 @@ app.listen(port,()=>{
 main(console.log("mongoose connected")).catch(err => console.log(err));
 
 async function main() {
-    await mongoose.connect('mongodb://127.0.0.1:27017/recipeApp');
+    await mongoose.connect(process.env.URL);
 }
